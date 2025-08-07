@@ -1,13 +1,18 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Curso, descriptionType, levelType, Prisma } from '@prisma/client'
+import { CreateCursoDto } from "./dto/create-curso.dto";
 
 @Injectable()
 export class CursoService {
     constructor(private prisma: PrismaService) { }
 
-    async create(data: Prisma.CursoCreateInput): Promise<Curso> {
-        return this.prisma.curso.create({data})
+    async create(data: CreateCursoDto): Promise<Curso> {
+        return this.prisma.curso.create({data: {
+            name: data.name,
+            description: data.description,
+            level: data.level
+        }})
     }
 
     async findAll() {
